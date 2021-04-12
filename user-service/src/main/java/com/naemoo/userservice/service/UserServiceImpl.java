@@ -8,6 +8,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.UUID;
 
 @Service
@@ -22,11 +23,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public UserDto createUser(UserDto userDto) {
         userDto.setUserId(UUID.randomUUID().toString());
-        UserEntity userEntity = modelMapper.map(userDto, UserEntity.class);
-        userRepository.save(userEntity);
-
-        return null;
+        userDto.setEncryptedPwd("password");
+        UserEntity userEntity = UserEntity.builder()
+                .email(userDto.getEmail())
+                .userId(userDto.getUserId())
+                .encryptedPwd(userDto.getEncryptedPwd())
+                .name(userDto.getName())
+                .build();
+        UserEntity savedUser = userRepository.save(userEntity);
+        UserDto retUserDto = modelMapper.map(savedUser, UserDto.class);
+        return retUserDto;
     }
 }
