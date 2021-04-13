@@ -43,6 +43,4 @@ public class UserController {
         ResponseUser responseUser = modelMapper.map(retUser, ResponseUser.class);
         return ResponseEntity.created(linkTo(UserController.class).toUri()).body(responseUser);
     }
-
-
 }
