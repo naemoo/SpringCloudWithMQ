@@ -26,19 +26,3 @@ spring:
           uri: lb://USER-SERVICE
           predicates:
             - Path=/user-service/**
-        - id: second-service
-          uri: lb://{서비스 이름}
-          predicates:
-            - Path=/second-service/**
-          filters:
-            - name: CustomFilter
-            - name: LoggingFilter
-              args:
-                baseMessage: Hi, there.
-                preLogger: true
-                postLogger: true
-
-
-
-
-
