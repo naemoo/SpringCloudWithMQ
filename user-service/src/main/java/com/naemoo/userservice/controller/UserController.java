@@ -48,7 +48,7 @@ public class UserController {
     }
 
     @GetMapping("/{userId}")
-    public ResponseEntity<ResponseUser> findUserById(@PathVariable("Id") String id) {
+    public ResponseEntity<ResponseUser> findUserById(@PathVariable("userId") String id) {
         UserDto userDto = userService.getUserById(id);
         ResponseUser responseUser = modelMapper.map(userDto, ResponseUser.class);
         return ResponseEntity.ok().body(responseUser);
