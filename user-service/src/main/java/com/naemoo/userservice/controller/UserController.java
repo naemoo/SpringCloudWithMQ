@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
 @RestController
-@RequestMapping("/user-service/users")
+@RequestMapping("/users")
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
