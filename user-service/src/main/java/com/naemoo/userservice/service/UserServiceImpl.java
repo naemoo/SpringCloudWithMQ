@@ -1,10 +1,13 @@
 package com.naemoo.userservice.service;
 
+import com.naemoo.userservice.client.OrderServiceClient;
 import com.naemoo.userservice.dto.UserDto;
 import com.naemoo.userservice.entity.UserEntity;
 import com.naemoo.userservice.repository.UserRepository;
 import com.naemoo.userservice.vo.ResponseOrder;
+import feign.FeignException;
 import lombok.RequiredArgsConstructor;
+import org.apache.http.cookie.CookieAttributeHandler;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -26,6 +29,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final OrderServiceClient orderServiceClient;
 
     @Override
     @Transactional
@@ -49,8 +53,7 @@ public class UserServiceImpl implements UserService {
         if (findUser == null) {
             throw new RuntimeException("찾을 수 없는 사용자 입니다.");
         }
-        // TODO: orders 구현
-        List<ResponseOrder> orders = new ArrayList<>();
+        List<ResponseOrder> orders = orderServiceClient.getOrders(userId);
         UserDto userDto = modelMapper.map(findUser, UserDto.class);
         userDto.setOrders(orders);
         return userDto;
